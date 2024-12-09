@@ -14,9 +14,7 @@ public class ResponseClassToJsonSchemaSerializer extends JsonSerializer<Class<?>
     @Override
     public void serialize(Class<?> value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
         JsonNode schema = generateJsonSchema(value);
-        //gen.writeStartObject();
         gen.writeTree(schema);
-        //gen.writeEndObject();
     }
 
     @Override
