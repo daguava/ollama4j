@@ -19,13 +19,8 @@ public class Utils {
   private static ObjectMapper objectMapper;
   private static final SchemaGeneratorConfigBuilder configBuilder =
           new SchemaGeneratorConfigBuilder(SchemaVersion.DRAFT_2020_12, OptionPreset.PLAIN_JSON);
-    private static SchemaGenerator generator = null;
+  private static SchemaGenerator generator = null;
   private static final Map<Class<?>, JsonNode> schemaCache = new ConcurrentHashMap<Class<?>, JsonNode>();
-
-  public Utils() {
-    configBuilder.forFields().withRequiredCheck(field -> true);
-    generator = new SchemaGenerator(configBuilder.build());
-  }
 
   public static ObjectMapper getObjectMapper() {
     if(objectMapper == null) {
@@ -50,6 +45,10 @@ public class Utils {
   }
 
   public static JsonNode generateJsonSchema(Class<?> format) {
+    if(generator == null) {
+      configBuilder.forFields().withRequiredCheck(field -> true);
+      generator = new SchemaGenerator(configBuilder.build());
+    }
     return schemaCache.computeIfAbsent(format, k -> generator.generateSchema(format));
   }
 }
