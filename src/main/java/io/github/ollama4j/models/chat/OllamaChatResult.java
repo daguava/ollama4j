@@ -2,6 +2,8 @@ package io.github.ollama4j.models.chat;
 
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.github.ollama4j.models.response.OllamaResult;
 
 import static io.github.ollama4j.utils.Utils.getObjectMapper;
@@ -31,11 +33,12 @@ public class OllamaChatResult extends OllamaResult {
         return (T) this.structuredResponse;
     }
 
-    public OllamaChatResult(String response, long responseTime, int httpStatusCode, List<OllamaChatMessage> chatHistory, Class<?> responseType) {
+    public OllamaChatResult(String response, long responseTime, int httpStatusCode, List<OllamaChatMessage> chatHistory, Class<?> responseType) throws JsonProcessingException {
         super(response, responseTime, httpStatusCode);
         this.chatHistory = chatHistory;
         if(responseType != null) {
-            this.structuredResponse = getObjectMapper().convertValue(response, responseType);
+            JsonNode jsonNode = getObjectMapper().readTree(response);
+            this.structuredResponse = getObjectMapper().convertValue(jsonNode, responseType);
         }
         appendAnswerToChatHistory(response);
     }
