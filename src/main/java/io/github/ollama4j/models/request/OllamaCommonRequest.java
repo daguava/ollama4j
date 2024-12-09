@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.github.ollama4j.utils.ResponseClassToJsonSchemaSerializer;
 import io.github.ollama4j.utils.Utils;
 import lombok.Data;
 import org.json.JSONObject;
@@ -14,12 +17,14 @@ import org.json.JSONObject;
 public abstract class OllamaCommonRequest {
 
   protected String model;
-  protected JSONObject format;
   protected Map<String, Object> options;
   protected String template;
   protected boolean stream;
   @JsonProperty(value = "keep_alive")
   protected String keepAlive;
+  @JsonSerialize(using = ResponseClassToJsonSchemaSerializer.class)
+  @JsonProperty(value = "format")
+  protected Class<?> responseClass;
 
   
   public String toString() {

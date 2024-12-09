@@ -8,7 +8,8 @@ import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.json.JSONObject;
+
+import static io.github.ollama4j.utils.Utils.generateJsonSchema;
 
 @Getter
 @Setter
@@ -35,17 +36,17 @@ public class OllamaGenerateRequest extends OllamaCommonRequest implements Ollama
     this.images = images;
   }
 
-  public OllamaGenerateRequest(String model, String prompt, JSONObject format) {
+  public OllamaGenerateRequest(String model, String prompt, Class<?> responseClass) {
     this.model = model;
     this.prompt = prompt;
-    this.format = format;
+    this.responseClass = responseClass;
   }
 
-  public OllamaGenerateRequest(String model, String prompt, List<String> images, JSONObject format) {
+  public OllamaGenerateRequest(String model, String prompt, List<String> images, Class<?> responseClass) {
     this.model = model;
     this.prompt = prompt;
     this.images = images;
-    this.format = format;
+    this.responseClass = responseClass;
   }
 
 
