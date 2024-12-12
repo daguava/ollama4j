@@ -49,4 +49,8 @@ public class OllamaGenerateRequestBuilder {
         return this;
     }
 
+    public OllamaGenerateRequestBuilder withResponseClass(Class<?> responseType) {
+        this.request.setResponseClass(responseType);
+        return this;
+    }
 }

@@ -36,17 +36,17 @@ public class OllamaGenerateRequest extends OllamaCommonRequest implements Ollama
     this.images = images;
   }
 
-  public OllamaGenerateRequest(String model, String prompt, Class<?> responseClass) {
+  public OllamaGenerateRequest(String model, String prompt, Class<?> format) {
     this.model = model;
     this.prompt = prompt;
-    this.responseClass = responseClass;
+    this.responseClass = format;
   }
 
-  public OllamaGenerateRequest(String model, String prompt, List<String> images, Class<?> responseClass) {
+  public OllamaGenerateRequest(String model, String prompt, List<String> images, Class<?> format) {
     this.model = model;
     this.prompt = prompt;
     this.images = images;
-    this.responseClass = responseClass;
+    this.responseClass = format;
   }
 
 

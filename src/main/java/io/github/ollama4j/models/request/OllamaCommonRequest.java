@@ -23,7 +23,7 @@ public abstract class OllamaCommonRequest {
   @JsonProperty(value = "keep_alive")
   protected String keepAlive;
   @JsonSerialize(using = ResponseClassToJsonSchemaSerializer.class)
-  @JsonProperty(value = "format")
+  @JsonProperty(value = "format", access = JsonProperty.Access.READ_ONLY)
   protected Class<?> responseClass;
 
   
