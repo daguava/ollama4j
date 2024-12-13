@@ -1,6 +1,8 @@
 package io.github.ollama4j.models.generate;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import io.github.ollama4j.utils.Options;
+import org.json.JSONObject;
 
 /**
  * Helper class for creating {@link OllamaGenerateRequest}
@@ -26,11 +28,6 @@ public class OllamaGenerateRequestBuilder {
         request.setPrompt(prompt);
         return this;
     }
-    
-    public OllamaGenerateRequestBuilder withGetJsonResponse(){
-        this.request.setReturnFormatJson(true);
-        return this;
-    }
 
     public OllamaGenerateRequestBuilder withOptions(Options options){
         this.request.setOptions(options.getOptionsMap());
@@ -52,4 +49,8 @@ public class OllamaGenerateRequestBuilder {
         return this;
     }
 
+    public OllamaGenerateRequestBuilder withResponseClass(Class<?> responseType) {
+        this.request.setResponseClass(responseType);
+        return this;
+    }
 }
