@@ -3,6 +3,7 @@ package io.github.ollama4j.models.response;
 import static io.github.ollama4j.utils.Utils.getObjectMapper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.github.ollama4j.exceptions.OllamaBaseException;
 import io.github.ollama4j.models.chat.OllamaChatRequest;
@@ -30,14 +31,6 @@ public class OllamaResult {
 
   /**
    * -- GETTER --
-   *  Get the response class of the structured response
-   *
-   * @return Class<?> completion/response text
-   */
-  protected Class<?> responseType;
-
-  /**
-   * -- GETTER --
    *  Get the response status code.
    *
    * @return int - response status code
@@ -60,7 +53,6 @@ public class OllamaResult {
 
   public OllamaResult(String response, Class<?> responseType, long responseTime, int httpStatusCode) {
     this.response = response;
-    this.responseType = responseType;
     this.responseTime = responseTime;
     this.httpStatusCode = httpStatusCode;
   }
@@ -75,20 +67,18 @@ public class OllamaResult {
    * @throws RuntimeException       if the parameterized type supplied for unmarshalling is incompatible with the type supplied on initial request
    */
   public <T> T getStructuredResponse() {
-    if (this.responseType == null) {
-      throw new IllegalStateException("Response class was not set in the original request; response cannot be structured.");
-    }
-
     if (this.response == null) {
       throw new IllegalStateException("Response is null; cannot structure a response.");
     }
 
+    TypeReference<T> typeRef = new TypeReference<>(){};
+
     try {
       @SuppressWarnings("unchecked")
-      T deserializedValue = (T) getObjectMapper().readValue(response, responseType);
+      T deserializedValue = getObjectMapper().readValue(response, typeRef);
       return deserializedValue;
     } catch (JsonProcessingException e) {
-      throw new RuntimeException("Failed to parse response into type: " + responseType.getName(), e);
+      throw new RuntimeException("Failed to parse response into type: " + typeRef.getType().getTypeName(), e);
     }
   }
 
